@@ -32,6 +32,8 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.Board.executor": "Run",
+    "Python.Board2.executor": "Run",
+    "Python.thing.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
@@ -55,16 +57,5 @@
       <updated>1759341818430</updated>
     </task>
     <servers />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Board2.py</url>
-          <line>37</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
