@@ -2,7 +2,6 @@ import random
 
 print("Welcome to Conner's checkers! Here are the instructions: ")
 print("You will either be the red or black piece (randomized), and whoever claims all the opposing pieces wins!")
-print("You have to enter a move which is a number between 0 and 7, and you have to type 4 numbers")
 
 class Checkers:
     def __init__(self, size=8):
@@ -40,7 +39,7 @@ class Checkers:
             self.board[fr][fc] = ' '
             return True
 
-        elif abs(row_diff) == 2 and abs(col_diff) == 2:
+        elif (row_diff) == 2 and (col_diff) == 2:
             mid_row = (fr + tr)//2
             mid_col = (fc + tc)//2
             mid_piece = self.board[mid_row][mid_col]
@@ -66,7 +65,7 @@ class Checkers:
         turn = 0
 
         print(f"white = 'w', black = 'b'")
-        print(f"{players[0].upper()}'s turn\n")
+        print(f"{players[0].upper()}'s turn")
 
         while True:
             self.print_board()
@@ -79,8 +78,8 @@ class Checkers:
                     print("Invalid input. Enter four numbers.")
                     continue
                 fr, fc, tr, tc = map(int, move)
-                if not all(0 <= x < self.size for x in [fr, fc, tr, tc]):
-                    print("Invalid input. Numbers have to be between 0 and 7.")
+                if not all(0 <= x < 8 for x in [fr, fc, tr, tc]):
+                    print("Invalid input. Numbers must be between 0 and 7.")
                     continue
             except ValueError:
                 print("Invalid format. Use numbers only.")
@@ -92,6 +91,3 @@ class Checkers:
                     print(f"\n{current_player.upper()}'s wins! Game over!")
                     break
                 turn += 1
-
-game = Checkers()
-game.play()

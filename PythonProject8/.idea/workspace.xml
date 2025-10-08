@@ -33,6 +33,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.Board.executor": "Run",
     "Python.Board2.executor": "Run",
+    "Python.dfsdg.executor": "Run",
     "Python.thing.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
