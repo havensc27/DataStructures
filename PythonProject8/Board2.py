@@ -1,8 +1,8 @@
 import random
 
 print("Welcome to Conner's checkers! Here are the instructions: ")
-print("You will either be the red or black piece (randomized), and whoever claims all the opposing pieces wins!")
-print("You have to enter a move which is a number between 0 and 7, and you have to type 4 numbers")
+print("You will either be the white or black piece (randomized), and whoever claims all the opposing pieces wins!")
+print("You have to enter a move with the coordinates (r, c) of your piece, and then the coordinates of where you want to move (r, c)")
 
 class Checkers:
     def __init__(self, size=8):
@@ -21,77 +21,103 @@ class Checkers:
 
     def print_board(self):
         print(" " + " ".join(map(str, range(self.size))))
+        print(" " + "--" * (self.size + 1))
         for i in range(self.size):
             print(str(i) + " " + " ".join(self.board[i]))
 
     def move_piece(self, fr, fc, tr, tc, player):
-        if self.board[fr][fc].lower() != player:
-            print("Invalid move: You must move your own piece")
-            return False
+        piece = self.board[fr][fc]
+        opponent = 'b' if player == 'w' else 'w'
+
+        if piece != player: return False
         if self.board[tr][tc] != ' ':
-            print("Invalid move: destination not empty")
+            print("Invalid: Destination is not empty")
             return False
 
         row_diff = tr - fr
-        col_diff = tc - fc
+        col_diff = abs(tc - fc)
 
-        if abs(row_diff) == 1 and abs(col_diff) == 1:
-            self.board[tr][tc] = self.board[fr][fc]
+        if abs(row_diff) == 1 and col_diff == 1:
+            if (player == 'w' and row_diff > 0) or (player == 'b' and row_diff < 0):
+                print("Invalid move: Pieces must move forward.")
+                return False
+            self.board[tr][tc] = piece
             self.board[fr][fc] = ' '
             return True
 
-        elif abs(row_diff) == 2 and abs(col_diff) == 2:
+        elif abs(row_diff) == 2 and col_diff == 2:
+            if (player == 'w' and row_diff > 0) or (player == 'b' and row_diff < 0):
+                print("Invalid move: Pieces must move forward.")
+                return False
+
             mid_row = (fr + tr)//2
             mid_col = (fc + tc)//2
             mid_piece = self.board[mid_row][mid_col]
 
-            if mid_piece.lower() != player and mid_piece != '':
-                self.board[tr][tc] = self.board[fr][fc]
-                self.board[fr][fc] = ''
-                self.board[mid_row][mid_col] = ''
+            if mid_piece == opponent:
+                self.board[tr][tc] = piece
+                self.board[fr][fc] = ' '
+                self.board[mid_row][mid_col] = ' '
+
+                print("\n You took a piece \n")
+
                 return True
             else:
-                print("Invalid jump: No opposite checker to capture.")
+                print("Invalid jump: No enemy checker to capture.")
                 return False
         else:
-            print("Invalid move: Move Diagonally.")
+            print("Invalid move: Your move has to be 1 or 2 spots diagonally.")
             return False
 
+    def get_coords(self, prompt, size):
+        while True:
+           try:
+               coords = input(prompt).strip().split()
+               if len(coords) != 2:
+                   print("Invalid input. Enter 2 numbers (I.E. 4 2).")
+                   continue
+               r, c = map(int, coords)
+               if not (0 <= r < size and 0 <= c < size):
+                   print("Invalid Input: Numbers have to be between 0 and 7.")
+                   continue
+               return r, c
+           except ValueError:
+               print("Invalid format: Use numbers only.")
+
     def has_pieces(self, player):
-        return any(cell.lower() == player for row in self.board for cell in row)
+        return any(cell == player for row in self.board for cell in row)
 
     def play(self):
-        players = ['white', 'black']
+        players = ['w', 'b']
         random.shuffle(players)
         turn = 0
-
-        print(f"white = 'w', black = 'b'")
-        print(f"{players[0].upper()}'s turn\n")
 
         while True:
             self.print_board()
             current_player = players[turn % 2]
-            print(f"{current_player.upper()}'s turn.")
+            player_name = "White" if current_player == 'w' else "Black"
+            print(f"\n{player_name} ({current_player})'s turn")
 
-            try:
-                move = input("Enter your move: fr, fc, tr, tc").strip().split()
-                if len(move) != 4:
-                    print("Invalid input. Enter four numbers.")
-                    continue
-                fr, fc, tr, tc = map(int, move)
-                if not all(0 <= x < self.size for x in [fr, fc, tr, tc]):
-                    print("Invalid input. Numbers have to be between 0 and 7.")
-                    continue
-            except ValueError:
-                print("Invalid format. Use numbers only.")
-                continue
+            fr, fc, tr, tc = -1, -1, -1, -1
+
+            while True:
+                fr, fc = self.get_coords(f"1. Enter coordinates of your piece. (r, c)", self.size)
+                if self.board[fr][fc] != current_player:
+                    print(f"Error: You have to select one of your own pieces ({current_player}).")
+                else:
+                    break
+
+            tr, tc = self.get_coords(f"2. Enter destination of your piece. (r, c)", self.size)
 
             if self.move_piece(fr, fc, tr, tc, current_player):
-                if not self.has_pieces(players[(turn + 1) % 2]):
+                opponent = players[(turn + 1) % 2]
+                if not self.has_pieces(opponent):
                     self.print_board()
-                    print(f"\n{current_player.upper()}'s wins! Game over!")
+                    print(f"\n{current_player} wins! Game is over!")
                     break
                 turn += 1
+            else:
+                print("Move failed. Try again.")
 
 game = Checkers()
 game.play()
