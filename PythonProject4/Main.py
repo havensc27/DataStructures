@@ -1,5 +1,6 @@
 from Graphics import *
 
+Version = "a"
 max_depth = 6
 start_length = 200
 start_center_x = 500
@@ -42,28 +43,17 @@ def fractal_h_tree(d, x1, y1, length):
         for next_x1, next_y1 in new_center:
             fractal_h_tree(d - 1, next_x1, next_y1, new_length)
 
+if Version == "a":
+    print("Run Version 'a': H-Tree version 1")
+
+elif Version == "b":
+    print("Run Version 'b': Queue H-Tree")
+else:
+    print("Invalid version selected. Just 'a' or 'b'.")
+
 fractal_h_tree(max_depth, start_center_x, start_center_y, start_length)
 win.getMouse()
 win.close()
 
-from queue import *
-q = Queue()
-q.enqueue([6, 200, 500, 300])
 
-while not q.empty():
-
-   q0 = q.dequeue()
-   d = q0[0]
-   x1 = q0[1]
-   y1 = q0[2]
-   length = q0[3]
-
-   Line(Point(x1, y1), Point(x1, length)).draw(win)
-   Line(Point(x1, y1), Point(x1, y1)).draw(win)
-   Line(Point(x1, y1), Point(x1, y1)).draw(win)
-
-   if d > 0:
-       q.enqueue([d - 1, x1, y1, (x1 + x1) / 2, (y1 + y1) / 2, (x1 + x1) / 2, (y1 + y1) / 2])
-       q.enqueue([d - 1, x1, y1, (x1 + x1) / 2, (y1 + y1) / 2, (x1 + x1) / 2, (y1 + y1) / 2])
-       q.enqueue([d - 1, x1, y1, (x1 + x1) / 2, (y1 + y1) / 2, (x1 + x1) / 2, (y1 + y1) / 2])
 
