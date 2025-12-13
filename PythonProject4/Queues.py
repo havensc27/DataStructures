@@ -1,5 +1,6 @@
 class Queue:
     def __init__(self):
+        self.deque = None
         self.items = []
 
     def enqueue(self, item):

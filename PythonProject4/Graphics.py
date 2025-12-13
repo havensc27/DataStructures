@@ -395,6 +395,9 @@ class GraphWin(tk.Canvas):
            item.draw(self)
        self.update()
 
+   def stop(self):
+       pass
+
 
 class Transform:
    """Internal class for 2-D coordinate transformations"""
